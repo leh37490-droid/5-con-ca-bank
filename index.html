@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Con Cá Bank</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5fb;color:#17243b}
+header{background:linear-gradient(135deg,#063b8e,#0878d9);color:white;padding:25px 20px 30px;border-radius:0 0 25px 25px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:bold}
+.logo span{color:#ffdf54}
+.small{font-size:13px;opacity:.85}
+.balance{margin-top:25px;font-size:14px}
+.money{font-size:32px;font-weight:bold;margin:9px 0}
+.container{padding:16px;max-width:650px;margin:auto}
+.card{background:white;padding:18px;border-radius:17px;margin-bottom:15px;box-shadow:0 3px 14px #122d5010}
+h3{margin:0 0 15px;color:#123d7b}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.action{text-align:center;font-size:12px;color:#263d5e;cursor:pointer}
+.action div{background:#e8f2ff;border-radius:14px;padding:13px 3px;font-size:24px;margin-bottom:7px}
+button{background:#0969c9;color:white;border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
+button:active{opacity:.8}
+input,select{width:100%;padding:13px;border:1px solid #d6dfeb;border-radius:9px;margin:7px 0 14px;font-size:15px}
+label{font-size:13px;font-weight:bold}
+.page{display:none}
+.page.active{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:10px 2px;border-top:1px solid #ddd;z-index:5}
+.nav button{background:none;color:#65738a;padding:5px;font-size:11px}
+.nav button.selected{color:#0872d1}
+.nav span{display:block;font-size:21px;margin-bottom:3px}
+body{padding-bottom:75px}
+.transaction{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:13px 0;font-size:14px}
+.green{color:#07965b}
+.red{color:#df4545}
+.bankcard{background:linear-gradient(120deg,#092e70,#1689dc);color:white;padding:23px;border-radius:17px;margin:15px 0}
+.bankcard .number{font-size:19px;letter-spacing:3px;margin:25px 0}
+.notice{background:#fff7dc;color:#795c11;padding:12px;border-radius:10px;font-size:12px;line-height:1.5}
+footer{text-align:center;color:#8290a3;font-size:11px;padding:15px}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="top">
+  <div class="logo">🐟 5 CON CÁ <span>BANK</span></div>
+  <div>🔔</div>
+ </div>
+ <div class="small">NGÂN HÀNG SỐ • AN TOÀN • TIỆN LỢI</div>
+ <div class="balance">Xin chào, Khách hàng!</div>
+ <div class="small">Số dư tài khoản mô phỏng</div>
+ <div class="money" id="balance">50.000.000 ₫</div>
+ <div class="small">Tài khoản: 0005 2026 8888</div>
+</header>
+
+<main class="container">
+
+<section id="home" class="page active">
+ <div class="card">
+  <h3>⚡ Dịch vụ ngân hàng</h3>
+  <div class="actions">
+   <div class="action" onclick="show('transfer')"><div>💸</div>Chuyển tiền</div>
+   <div class="action" onclick="show('card')"><div>💳</div>Thẻ ATM</div>
+   <div class="action" onclick="show('saving')"><div>🏦</div>Tiết kiệm</div>
+   <div class="action" onclick="show('loan')"><div>📊</div>Vay vốn</div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h3>🌟 Sản phẩm nổi bật</h3>
+  <p>💳 Thẻ 5 Con Cá – Thanh toán tiện lợi</p>
+  <p>💰 Tiết kiệm tương lai – Tích lũy mỗi ngày</p>
+  <p>🏠 Vay vốn linh hoạt – Hỗ trợ kế hoạch cá nhân</p>
+  <button onclick="show('account')">Mở tài khoản ngay</button>
+ </div>
+
+ <div class="card">
+  <h3>📋 Giao dịch gần đây</h3>
+  <div id="history"><p class="small">Chưa có giao dịch mới.</p></div>
+ </div>
+ <div class="notice">🔒 Đây là ngân hàng mô phỏng phục vụ học tập. Không nhập thông tin tài khoản hoặc mật khẩu ngân hàng thật.</div>
+</section>
+
+<section id="account" class="page">
+ <div class="card">
+  <h3>👤 Mở tài khoản ngân hàng</h3>
+  <p class="small">Đăng ký tài khoản trải nghiệm 5 Con Cá Bank.</p>
+  <label>Họ và tên</label>
+  <input id="fullname" placeholder="Nhập họ và tên">
+  <label>Email</label>
+  <input id="email" type="email" placeholder="example@gmail.com">
+  <label>Số điện thoại (số giả lập)</label>
+  <input id="phone" placeholder="Nhập số điện thoại">
+  <button onclick="openAccount()">Đăng ký tài khoản</button>
+  <p id="accountResult"></p>
+ </div>
+</section>
+
+<section id="transfer" class="page">
+ <div class="card">
+  <h3>💸 Chuyển tiền</h3>
+  <div class="notice">Chức năng chuyển tiền mô phỏng, không thực hiện giao dịch thật.</div><br>
+  <label>Tên người nhận</label>
+  <input id="receiver" placeholder="Tên người nhận">
+  <label>Số tài khoản người nhận</label>
+  <input id="receiverNumber" placeholder="Nhập số tài khoản giả lập">
+  <label>Số tiền (VNĐ)</label>
+  <input id="amount" type="number" placeholder="Ví dụ: 500000">
+  <label>Nội dung chuyển tiền</label>
+  <input id="message" placeholder="Nội dung">
+  <button onclick="transfer()">Xác nhận chuyển tiền</button>
+  <p id="transferResult"></p>
+ </div>
+</section>
+
+<section id="card" class="page">
+ <div class="card">
+  <h3>💳 Dịch vụ thẻ ngân hàng</h3>
+  <div class="bankcard">
+   <b>🐟 5 CON CÁ BANK</b>
+   <div class="number">•••• •••• •••• 8888</div>
+   <div class="top"><span>KHÁCH HÀNG</span><span>VISA</span></div>
+  </div>
+  <p>Thẻ ghi nợ 5 Con Cá</p>
+  <p>✓ Thanh toán thuận tiện</p>
+  <p>✓ Quản lý chi tiêu</p>
+  <p>✓ Theo dõi giao dịch</p>
+  <button onclick="issueCard()">Đăng ký phát hành thẻ mô phỏng</button>
+  <p id="cardResult"></p>
+ </div>
+</section>
+
+<section id="saving" class="page">
+ <div class="card">
+  <h3>🏦 Gửi tiết kiệm</h3>
+  <p class="small">Tích lũy hôm nay – Vững vàng ngày mai.</p>
+  <label>Số tiền gửi (VNĐ)</label>
+  <input id="deposit" type="number" placeholder="Ví dụ: 10000000">
+  <label>Kỳ hạn</label>
+  <select id="term">
+   <option value="3">3 tháng</option>
+   <option value="6">6 tháng</option>
+   <option value="12">12 tháng</option>
+   <option value="24">24 tháng</option>
+  </select>
+  <label>Lãi suất giả định (%/năm)</label>
+  <input id="rate" type="number" value="5.5">
+  <button onclick="calculateSaving()">Tính tiền tiết kiệm</button>
+  <div id="savingResult"></div>
+ </div>
+</section>
+
+<section id="loan" class="page">
+ <div class="card">
+  <h3>📊 Vay vốn ngân hàng</h3>
+  <p class="small">Công cụ tính toán khoản vay minh họa.</p>
+  <label>Số tiền muốn vay (VNĐ)</label>
+  <input id="loanAmount" type="number" placeholder="Ví dụ: 50000000">
+  <label>Thời hạn vay (tháng)</label>
+  <input id="loanTerm" type="number" value="12">
+  <label>Lãi suất giả định (%/năm)</label>
+  <input id="loanRate" type="number" value="10">
+  <button onclick="calculateLoan()">Tính khoản trả góp</button>
+  <div id="loanResult"></div>
+  <div class="notice">Kết quả chỉ mang tính minh họa, không phải đề nghị cho vay hoặc phê duyệt tín dụng.</div>
+ </div>
+</section>
+
+<section id="profile" class="page">
+ <div class="card">
+  <h3>👤 Khách hàng</h3>
+  <p>Ngân hàng: 5 Con Cá Bank</p>
+  <p id="profileName">Tên: Khách hàng</p>
+  <p>Tài khoản: 0005 2026 8888</p>
+  <p>Loại tài khoản: Thanh toán mô phỏng</p>
+  <p>Trạng thái: Đang hoạt động (demo)</p>
+ </div>
+ <div class="card">
+  <h3>☎️ Chăm sóc khách hàng</h3>
+  <p>Hotline mô phỏng: 1900 0005</p>
+  <p>Email: hotro@5concabank.example</p>
+  <p>Thời gian hỗ trợ: 24/7 (demo)</p>
+ </div>
+</section>
+
+<footer>© 2026 5 CON CÁ BANK • SẢN PHẨM HỌC TẬP</footer>
+</main>
+
+<nav class="nav">
+ <button class="selected" onclick="show('home',this)"><span>🏠</span>Trang chủ</button>
+ <button onclick="show('account',this)"><span>👤</span>Tài khoản</button>
+ <button onclick="show('saving',this)"><span>💰</span>Tiết kiệm</button>
+ <button onclick="show('profile',this)"><span>☰</span>Cá nhân</button>
+</nav>
+
+<script>
+let balance=50000000;
+function money(n){return Math.round(n).toLocaleString('vi-VN')+' ₫'}
+function updateBalance(){
+ document.getElementById('balance').textContent=money(balance);
+}
+function show(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('selected'));
+ if(btn)btn.classList.add('selected');
+ window.scrollTo(0,0);
+}
+function addHistory(title,amount,type){
+ let h=document.getElementById('history');
+ if(h.querySelector('.small'))h.innerHTML='';
+ let row=document.createElement('div');
+ row.className='transaction';
+ let name=document.createElement('span');
+ name.textContent=title;
+ let value=document.createElement('b');
+ value.textContent=(type==='in'?'+':'-')+money(amount);
+ value.className=type==='in'?'green':'red';
+ row.append(name,value);
+ h.prepend(row);
+}
+function openAccount(){
+ let name=document.getElementById('fullname').value.trim();
+ let email=document.getElementById('email').value.trim();
+ let phone=document.getElementById('phone').value.trim();
+ if(!name||!email.includes('@')||!phone){
+  alert('Vui lòng điền đầy đủ thông tin hợp lệ!');
+  return;
+ }
+ document.getElementById('profileName').textContent='Tên: '+name;
+ document.getElementById('accountResult').textContent='✓ Tạo tài khoản trải nghiệm thành công!';
+}
+function transfer(){
+ let name=document.getElementById('receiver').value.trim();
+ let number=document.getElementById('receiverNumber').value.trim();
+ let amount=Number(document.getElementById('amount').value);
+ if(!name||!number||amount<=0||amount>balance){
+  alert('Vui lòng kiểm tra thông tin và số dư!');
+  return;
+ }
+ balance-=amount;
+ updateBalance();
+ addHistory('Chuyển tiền: '+name,amount,'out');
+ document.getElementById('transferResult').textContent='✓ Giao dịch mô phỏng thành công: '+money(amount);
+}
+function issueCard(){
+ document.getElementById('cardResult').textContent='✓ Đăng ký thẻ mô phỏng thành công!';
+}
+function calculateSaving(){
+ let p=Number(document.getElementById('deposit').value);
+ let t=Number(document.getElementById('term').value);
+ let r=Number(document.getElementById('rate').value);
+ if(p<=0||r<0){alert('Vui lòng nhập số tiền và lãi suất hợp lệ');return}
+ let interest=p*r/100*t/12;
+ document.getElementById('savingResult').innerHTML=
+ '<div class="card"><p>Tiền gốc: '+money(p)+'</p><p>Tiền lãi dự kiến: <b class="green">'+money(interest)+'</b></p><h3>Tổng nhận: '+money(p+interest)+'</h3></div>';
+}
+function calculateLoan(){
+ let p=Number(document.getElementById('loanAmount').value);
+ let n=Number(document.getElementById('loanTerm').value);
+ let r=Number(document.getElementById('loanRate').value)/1200;
+ if(p<=0||n<=0||r<0){alert('Vui lòng nhập thông tin hợp lệ');return}
+ let monthly=r===0?p/n:p*r/(1-Math.pow(1+r,-n));
+ document.getElementById('loanResult').innerHTML=
+ '<div class="card"><p>Số tiền vay: '+money(p)+'</p><p>Thời hạn: '+n+' tháng</p><p>Lãi suất: '+(r*1200*100).toFixed(2)+'%/năm</p><h3>Trả mỗi tháng: '+money(monthly)+'</h3><p>Tổng thanh toán dự kiến: '+money(monthly*n)+'</p></div>';
+}
+updateBalance();
+</script>
+</body>
+</html>
